@@ -1,15 +1,16 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:09:41
- * @LastEditTime: 2026-08-19 15:09:41
+ * @LastEditTime: 2026-08-19 17:45:18
  * @LastEditors: mulingyuer
- * @Description:
- * @FilePath: \vscode-byok-generator\src\components\StepCredentials.vue
+ * @Description: 凭证表单（分组名称 / BaseUrl / ApiKey），暴露 validate 供父组件触发生成
+ * @FilePath: \vscode-byok-generator\src\components\CredentialsForm.vue
  * 怎么可能会有bug！！！
 -->
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import type { FormInst, FormRules } from "naive-ui";
+import { EyeOutline, EyeOffOutline } from "@vicons/ionicons5";
 import { useWizardStore } from "@/stores/wizard";
 
 const store = useWizardStore();
@@ -59,27 +60,31 @@ const rules: FormRules = {
 	}
 };
 
-async function handleNext() {
-	try {
-		await formRef.value?.validate();
-		store.nextStep();
-	} catch {
-		// 校验失败时表单项会自行展示错误
-	}
-}
+const apiKeyVisible = ref(false);
+
+// 供父组件在点击"生成"时统一触发校验
+defineExpose({
+	validate: () => formRef.value?.validate()
+});
 </script>
 
 <template>
-	<div class="step">
+	<div class="credentials-form">
 		<n-form
 			ref="formRef"
 			:model="formValue"
 			:rules="rules"
 			label-placement="top"
 			require-mark-placement="right-hanging"
+			autocomplete="off"
 		>
 			<n-form-item label="Group Name" path="groupName">
-				<n-input v-model:value="store.groupName" placeholder="例如 My Gateway" clearable />
+				<n-input
+					v-model:value="store.groupName"
+					placeholder="例如 My Gateway"
+					clearable
+					:input-props="{ autocomplete: 'off' }"
+				/>
 			</n-form-item>
 			<p class="field-hint">显示在 VS Code 模型选择器中的分组名称</p>
 
@@ -88,32 +93,37 @@ async function handleNext() {
 					v-model:value="store.baseUrl"
 					placeholder="https://gateway.example.com/v1"
 					clearable
+					:input-props="{ autocomplete: 'off' }"
 				/>
 			</n-form-item>
 
 			<n-form-item label="ApiKey" path="apiKey">
 				<n-input
 					v-model:value="store.apiKey"
-					type="password"
-					show-password-on="click"
+					type="text"
 					placeholder="仅用于本地拉取模型列表"
 					clearable
-				/>
+					:input-props="{ autocomplete: 'off', class: apiKeyVisible ? '' : 'masked-input' }"
+				>
+					<template #suffix>
+						<n-icon
+							:component="apiKeyVisible ? EyeOutline : EyeOffOutline"
+							style="cursor: pointer"
+							@click="apiKeyVisible = !apiKeyVisible"
+						/>
+					</template>
+				</n-input>
 			</n-form-item>
 		</n-form>
 
 		<p class="hint">
 			ApiKey 仅在浏览器本地使用，不会上传至任何服务器。生成配置时会写成 ${input:...} 变量。
 		</p>
-
-		<div class="actions">
-			<n-button type="primary" @click="handleNext">下一步</n-button>
-		</div>
 	</div>
 </template>
 
 <style scoped>
-.step {
+.credentials-form {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
@@ -127,13 +137,13 @@ async function handleNext() {
 	line-height: 1.6;
 }
 
-.hint {
-	margin: 0;
+/* 用 CSS 遮罩代替 type="password"，绕过浏览器密码管理器 */
+:deep(.masked-input) {
+	-webkit-text-security: disc;
+	text-security: disc;
 }
 
-.actions {
-	display: flex;
-	justify-content: flex-end;
-	margin-top: 8px;
+.hint {
+	margin: 0;
 }
 </style>

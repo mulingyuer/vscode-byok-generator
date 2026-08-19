@@ -3,20 +3,16 @@
  * @Date: 2026-08-19 15:09:39
  * @LastEditTime: 2026-08-19 15:09:40
  * @LastEditors: mulingyuer
- * @Description:
+ * @Description: 配置生成器的全局状态（凭证、模型、协议、输出）
  * @FilePath: \vscode-byok-generator\src\stores\wizard.ts
  * 怎么可能会有bug！！！
  */
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import type { ApiType, FetchMode, ModelItem, OutputMode } from "@/types";
+import type { ApiType, FetchMode, ModelItem, OutputMode } from "@/types/wizard";
 import { generateProviderConfig, serializeConfig } from "@/utils/configGenerator";
 
-const INITIAL_STEP = 1;
-const LAST_STEP = 4;
-
 export const useWizardStore = defineStore("wizard", () => {
-	const step = ref(INITIAL_STEP);
 	const groupName = ref("");
 	const baseUrl = ref("");
 	const apiKey = ref("");
@@ -33,18 +29,6 @@ export const useWizardStore = defineStore("wizard", () => {
 	});
 
 	const selectedCount = computed(() => selectedModelIds.value.length);
-
-	function setStep(next: number) {
-		step.value = Math.min(LAST_STEP, Math.max(INITIAL_STEP, next));
-	}
-
-	function nextStep() {
-		setStep(step.value + 1);
-	}
-
-	function prevStep() {
-		setStep(step.value - 1);
-	}
 
 	function toggleModel(id: string) {
 		const index = selectedModelIds.value.indexOf(id);
@@ -87,7 +71,6 @@ export const useWizardStore = defineStore("wizard", () => {
 	}
 
 	function reset() {
-		step.value = INITIAL_STEP;
 		groupName.value = "";
 		baseUrl.value = "";
 		apiKey.value = "";
@@ -100,7 +83,6 @@ export const useWizardStore = defineStore("wizard", () => {
 	}
 
 	return {
-		step,
 		groupName,
 		baseUrl,
 		apiKey,
@@ -112,9 +94,6 @@ export const useWizardStore = defineStore("wizard", () => {
 		apiType,
 		generatedConfig,
 		outputMode,
-		setStep,
-		nextStep,
-		prevStep,
 		toggleModel,
 		selectAll,
 		invertSelection,

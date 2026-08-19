@@ -21,11 +21,11 @@ export default defineConfig({
 					"naive-ui": ["useDialog", "useMessage", "useNotification", "useLoadingBar"]
 				}
 			],
-			dts: "src/auto-imports.d.ts"
+			dts: "src/types/auto-imports.d.ts"
 		}),
 		Components({
 			resolvers: [NaiveUiResolver()],
-			dts: "src/components.d.ts"
+			dts: "src/types/components.d.ts"
 		})
 	],
 	resolve: {

@@ -1,14 +1,15 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:07:09
- * @LastEditTime: 2026-08-19 15:07:09
+ * @LastEditTime: 2026-08-19 17:46:20
  * @LastEditors: mulingyuer
- * @Description:
+ * @Description: 模型匹配器：用于根据模型 ID 匹配预设模型
  * @FilePath: \vscode-byok-generator\src\utils\modelMatcher.ts
  * 怎么可能会有bug！！！
  */
+
 import { MODEL_PRESETS } from "@/data/modelPresets";
-import type { ModelPreset } from "@/types";
+import type { ModelPreset } from "@/types/wizard";
 
 export function normalizeId(id: string): string {
 	return id.toLowerCase().replace(/[-_.\s]+/g, "");

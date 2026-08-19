@@ -11,7 +11,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    JsonEditor: typeof import('./components/JsonEditor.vue')['default']
+    CredentialsForm: typeof import('./../components/CredentialsForm.vue')['default']
+    JsonEditor: typeof import('./../components/JsonEditor.vue')['default']
+    ModelSelector: typeof import('./../components/ModelSelector.vue')['default']
     NAlert: typeof import('naive-ui')['NAlert']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
@@ -19,18 +21,17 @@ declare module 'vue' {
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
+    NIcon: typeof import('naive-ui')['NIcon']
     NInput: typeof import('naive-ui')['NInput']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NRadio: typeof import('naive-ui')['NRadio']
     NRadioButton: typeof import('naive-ui')['NRadioButton']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
-    NStep: typeof import('naive-ui')['NStep']
-    NSteps: typeof import('naive-ui')['NSteps']
+    NTabPane: typeof import('naive-ui')['NTabPane']
+    NTabs: typeof import('naive-ui')['NTabs']
+    OutputToolbar: typeof import('./../components/OutputToolbar.vue')['default']
+    ProtocolSelector: typeof import('./../components/ProtocolSelector.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    StepCredentials: typeof import('./components/StepCredentials.vue')['default']
-    StepGenerate: typeof import('./components/StepGenerate.vue')['default']
-    StepModelSelect: typeof import('./components/StepModelSelect.vue')['default']
-    StepProtocol: typeof import('./components/StepProtocol.vue')['default']
   }
 }

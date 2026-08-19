@@ -1,19 +1,20 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:07:09
- * @LastEditTime: 2026-08-19 15:07:10
+ * @LastEditTime: 2026-08-19 17:46:07
  * @LastEditors: mulingyuer
- * @Description:
+ * @Description: 配置生成器工具函数
  * @FilePath: \vscode-byok-generator\src\utils\configGenerator.ts
  * 怎么可能会有bug！！！
  */
+
 import type {
 	ApiType,
 	GenerateConfigInput,
 	GeneratedModelConfig,
 	GeneratedProviderConfig,
 	ModelItem
-} from "@/types";
+} from "@/types/wizard";
 import { matchPreset } from "@/utils/modelMatcher";
 
 export const DEFAULT_MODEL_LIMITS = {

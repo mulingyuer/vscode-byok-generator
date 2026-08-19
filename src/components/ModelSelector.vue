@@ -3,8 +3,8 @@
  * @Date: 2026-08-19 15:09:41
  * @LastEditTime: 2026-08-19 15:09:42
  * @LastEditors: mulingyuer
- * @Description:
- * @FilePath: \vscode-byok-generator\src\components\StepModelSelect.vue
+ * @Description: 模型选择器，Tab 切换"自动获取"与"预设模型"，支持搜索、全选、反选
+ * @FilePath: \vscode-byok-generator\src\components\ModelSelector.vue
  * 怎么可能会有bug！！！
 -->
 <script setup lang="ts">
@@ -12,7 +12,7 @@ import { computed, ref, watch } from "vue";
 import { useMessage } from "naive-ui";
 import { VENDOR_LABELS, VENDOR_ORDER, presetsToModelItems } from "@/data/modelPresets";
 import { useWizardStore } from "@/stores/wizard";
-import type { FetchMode } from "@/types";
+import type { FetchMode } from "@/types/wizard";
 import { describeFetchError, fetchRemoteModels } from "@/utils/fetchModels";
 
 const store = useWizardStore();
@@ -20,11 +20,6 @@ const message = useMessage();
 const keyword = ref("");
 const loading = ref(false);
 const fetchError = ref("");
-
-const modeOptions = [
-	{ label: "自动获取", value: "auto" },
-	{ label: "预设模型", value: "preset" }
-];
 
 const filteredModels = computed(() => {
 	const query = keyword.value.trim().toLowerCase();
@@ -116,31 +111,28 @@ function handleSelectAll() {
 function handleInvert() {
 	store.invertSelection(visibleIds.value);
 }
-
-function handleNext() {
-	if (store.selectedCount === 0) {
-		message.warning("请至少选择一个模型");
-		return;
-	}
-	store.nextStep();
-}
 </script>
 
 <template>
-	<div class="step">
-		<n-radio-group :value="store.fetchMode" @update:value="handleModeChange">
-			<n-radio-button v-for="item in modeOptions" :key="item.value" :value="item.value">
-				{{ item.label }}
-			</n-radio-button>
-		</n-radio-group>
-
-		<n-alert v-if="store.fetchMode === 'auto'" type="info" :bordered="false">
-			浏览器会直接请求网关的 /v1/models。若网关未开放 CORS，请求会失败，请改用预设模型。
-		</n-alert>
-
-		<div v-if="store.fetchMode === 'auto'" class="toolbar">
-			<n-button type="primary" :loading="loading" @click="handleFetch">获取模型</n-button>
-		</div>
+	<div class="model-selector">
+		<n-tabs type="segment" :value="store.fetchMode" animated @update:value="handleModeChange">
+			<n-tab-pane name="auto" tab="自动获取">
+				<n-alert type="info" :bordered="false" class="pane-tip">
+					浏览器会直接请求网关的 /v1/models。若网关未开放 CORS，请求会失败，请改用预设模型。
+				</n-alert>
+				<div class="toolbar">
+					<n-button type="primary" :loading="loading" @click="handleFetch">获取模型</n-button>
+				</div>
+			</n-tab-pane>
+			<!--
+				naive-ui 2.45.0 的 Tabs 会把 tab prop 的字符串文本转换为 Text vnode 后
+				经 normalizeVNode cloneIfMounted 处理，无内容的 tab-pane 会导致其变成 Comment 节点，
+				从而丢失 tab 文本。给 tab-pane 加任意子内容即可规避。
+			-->
+			<n-tab-pane name="preset" tab="预设模型">
+				<span class="sr-only" aria-hidden="true" />
+			</n-tab-pane>
+		</n-tabs>
 
 		<n-alert v-if="fetchError" type="error" :bordered="false">
 			{{ fetchError }}
@@ -191,19 +183,19 @@ function handleNext() {
 
 		<div class="footer">
 			<span>已选 {{ store.selectedCount }} 个</span>
-			<div class="actions">
-				<n-button @click="store.prevStep()">上一步</n-button>
-				<n-button type="primary" @click="handleNext">下一步</n-button>
-			</div>
 		</div>
 	</div>
 </template>
 
 <style scoped>
-.step {
+.model-selector {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+}
+
+.pane-tip {
+	margin-bottom: 12px;
 }
 
 .toolbar {
@@ -254,13 +246,10 @@ function handleNext() {
 .footer {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-end;
 	gap: 12px;
-}
-
-.actions {
-	display: flex;
-	gap: 8px;
+	color: var(--n-text-color-3, #8b8b8b);
+	font-size: 13px;
 }
 
 @media (max-width: 640px) {

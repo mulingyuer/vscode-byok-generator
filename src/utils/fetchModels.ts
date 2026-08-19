@@ -1,16 +1,16 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:09:40
- * @LastEditTime: 2026-08-19 15:51:47
+ * @LastEditTime: 2026-08-19 17:46:15
  * @LastEditors: mulingyuer
- * @Description:
+ * @Description: 获取模型列表
  * @FilePath: \vscode-byok-generator\src\utils\fetchModels.ts
  * 怎么可能会有bug！！！
  */
 
 import OpenAI from "openai";
 import { normalizeSdkBaseUrl } from "@/utils/configGenerator";
-import type { ModelItem } from "@/types";
+import type { ModelItem } from "@/types/wizard";
 
 export async function fetchRemoteModels(baseUrl: string, apiKey: string): Promise<ModelItem[]> {
 	const client = new OpenAI({

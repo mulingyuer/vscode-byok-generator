@@ -3,19 +3,11 @@
  * @Date: 2026-08-19 15:07:07
  * @LastEditTime: 2026-08-19 15:07:08
  * @LastEditors: mulingyuer
- * @Description:
+ * @Description: 协议（API 类型）选项的静态数据
  * @FilePath: \vscode-byok-generator\src\data\protocols.ts
  * 怎么可能会有bug！！！
  */
-import type { ApiType } from "@/types";
-
-export interface ProtocolOption {
-	value: ApiType;
-	title: string;
-	subtitle: string;
-	description: string;
-	hint: string;
-}
+import type { ProtocolOption } from "@/types/wizard";
 
 export const PROTOCOL_OPTIONS: ProtocolOption[] = [
 	{

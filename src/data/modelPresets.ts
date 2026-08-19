@@ -1,13 +1,13 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:07:08
- * @LastEditTime: 2026-08-19 15:07:09
+ * @LastEditTime: 2026-08-19 17:45:37
  * @LastEditors: mulingyuer
- * @Description:
+ * @Description: 模型预设的静态数据
  * @FilePath: \vscode-byok-generator\src\data\modelPresets.ts
  * 怎么可能会有bug！！！
  */
-import type { ModelItem, ModelPreset, ModelVendor } from "@/types";
+import type { ModelItem, ModelPreset, ModelVendor } from "@/types/wizard";
 
 const OPENAI_REASONING = ["minimal", "low", "medium", "high"];
 const STANDARD_REASONING = ["low", "medium", "high"];

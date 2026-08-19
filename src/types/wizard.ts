@@ -3,8 +3,8 @@
  * @Date: 2026-08-19 15:07:06
  * @LastEditTime: 2026-08-19 15:07:07
  * @LastEditors: mulingyuer
- * @Description:
- * @FilePath: \vscode-byok-generator\src\types\index.ts
+ * @Description: 向导功能相关的全部类型定义（模型、协议、配置生成等）
+ * @FilePath: \vscode-byok-generator\src\types\wizard.ts
  * 怎么可能会有bug！！！
  */
 export type ApiType = "chat-completions" | "responses" | "messages";
@@ -67,4 +67,12 @@ export interface GenerateConfigInput {
 	apiType: ApiType;
 	baseUrl: string;
 	selectedModels: ModelItem[];
+}
+
+export interface ProtocolOption {
+	value: ApiType;
+	title: string;
+	subtitle: string;
+	description: string;
+	hint: string;
 }

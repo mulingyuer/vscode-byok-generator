@@ -70,8 +70,16 @@ function handleReset() {
 
 		<n-card class="card">
 			<div class="action-bar">
-				<n-button @click="handleReset">重置</n-button>
-				<n-button type="primary" :loading="generating" @click="handleGenerate"> 生成配置 </n-button>
+				<n-button size="large" @click="handleReset">重置</n-button>
+				<n-button
+					size="large"
+					type="primary"
+					:loading="generating"
+					style="min-width: 120px"
+					@click="handleGenerate"
+				>
+					生成配置
+				</n-button>
 			</div>
 		</n-card>
 
@@ -98,20 +106,55 @@ function handleReset() {
 	gap: 16px;
 }
 
+@media (min-width: 1024px) {
+	.page {
+		max-width: 960px;
+		padding: 48px 24px 64px;
+		gap: 24px;
+	}
+}
+
+@media (min-width: 1600px) {
+	.page {
+		max-width: 1200px;
+	}
+}
+
+@media (max-width: 639px) {
+	.page {
+		padding-left: 12px;
+		padding-right: 12px;
+	}
+}
+
 .header h1 {
 	margin: 0 0 8px;
-	font-size: 24px;
+	font-size: 32px;
+	font-weight: 700;
+	letter-spacing: 0.01em;
 	line-height: 1.3;
+}
+
+@media (min-width: 1600px) {
+	.header h1 {
+		font-size: 36px;
+	}
 }
 
 .header p {
 	margin: 0;
 	color: #6b7280;
-	font-size: 14px;
+	font-size: 15px;
 }
 
 .card {
 	border-radius: 12px;
+	transition: box-shadow 0.2s ease;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.card:hover {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .action-bar {

@@ -53,11 +53,26 @@ function handleSelect(value: ApiType) {
 	border: 1px solid var(--n-border-color, #e0e0e6);
 	border-radius: 10px;
 	cursor: pointer;
+	transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .card.active {
 	border-color: var(--n-color-target, #18a058);
 	box-shadow: 0 0 0 1px var(--n-color-target, #18a058) inset;
+}
+
+.card .title {
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--n-text-color-1);
+}
+
+.card.active .title {
+	color: var(--n-color-target, #18a058);
 }
 
 .subtitle,

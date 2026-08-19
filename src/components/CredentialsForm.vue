@@ -129,6 +129,12 @@ defineExpose({
 	gap: 8px;
 }
 
+:deep(.n-form-item-label) {
+	font-weight: 600;
+	font-size: 14px;
+	color: var(--n-text-color-1);
+}
+
 .field-hint,
 .hint {
 	margin: -8px 0 8px;

@@ -24,7 +24,7 @@ body,
 }
 
 body {
-	background: #f5f7fa;
+	background: linear-gradient(180deg, #f8fafc 0%, #f5f7fa 40%);
 	color: #1f2225;
 	font-family:
 		Inter,

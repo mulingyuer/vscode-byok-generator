@@ -15,15 +15,11 @@ import type {
 	GeneratedProviderConfig,
 	ModelItem
 } from "@/types/wizard";
+import { FALLBACK_MODEL_DEFAULTS } from "@/constant/modelPresets";
 import { matchPreset } from "@/utils/modelMatcher";
 
-/** 模型默认值 */
-export const DEFAULT_MODEL_LIMITS = {
-	maxInputTokens: 128000,
-	maxOutputTokens: 8192,
-	toolCalling: true,
-	vision: false
-} as const;
+/** 模型默认值（未匹配预设时的兜底，来源统一收敛到 modelPresets/defaults.ts） */
+export const DEFAULT_MODEL_LIMITS = FALLBACK_MODEL_DEFAULTS;
 
 const API_PATHS: Record<ApiType, string> = {
 	"chat-completions": "/chat/completions",
@@ -73,27 +69,34 @@ export function normalizeSdkBaseUrl(baseUrl: string): string {
 }
 
 /** 构建单个模型的配置对象 */
-function buildModelConfig(model: ModelItem, url: string, apiType: ApiType): GeneratedModelConfig {
+function buildModelConfig(
+	model: ModelItem,
+	baseUrl: string,
+	providerApiType: ApiType
+): GeneratedModelConfig {
 	const preset = matchPreset(model.id);
+	const modelApiType = preset?.apiType ?? providerApiType;
 	const config: GeneratedModelConfig = {
 		id: model.id,
 		name: model.name || preset?.displayName || model.id,
-		url,
+		url: resolveModelUrl(baseUrl, modelApiType),
+		apiType: preset?.apiType,
 		toolCalling: preset?.toolCalling ?? DEFAULT_MODEL_LIMITS.toolCalling,
 		vision: preset?.vision ?? DEFAULT_MODEL_LIMITS.vision,
 		maxInputTokens: preset?.maxInputTokens ?? DEFAULT_MODEL_LIMITS.maxInputTokens,
 		maxOutputTokens: preset?.maxOutputTokens ?? DEFAULT_MODEL_LIMITS.maxOutputTokens
 	};
 
-	if (preset?.contextWindow) {
-		config.contextWindow = preset.contextWindow;
+	const contextWindow = preset?.contextWindow ?? DEFAULT_MODEL_LIMITS.contextWindow;
+	if (contextWindow) {
+		config.contextWindow = contextWindow;
 	}
 	if (preset?.thinking) {
 		config.thinking = true;
 	}
 	if (preset?.supportsReasoningEffort?.length) {
 		config.supportsReasoningEffort = [...preset.supportsReasoningEffort];
-		config.reasoningEffortFormat = apiType;
+		config.reasoningEffortFormat = modelApiType;
 	}
 
 	return config;
@@ -121,7 +124,6 @@ function generateDefaultSettings(
 
 /** 生成完整的 Provider 配置对象 */
 export function generateProviderConfig(input: GenerateConfigInput): GeneratedProviderConfig {
-	const url = resolveModelUrl(input.baseUrl, input.apiType);
 	const slug = toInputSlug(input.groupName);
 
 	const config: GeneratedProviderConfig = {
@@ -129,7 +131,9 @@ export function generateProviderConfig(input: GenerateConfigInput): GeneratedPro
 		vendor: "customendpoint",
 		apiKey: `\${input:${slug}}`,
 		apiType: input.apiType,
-		models: input.selectedModels.map((model) => buildModelConfig(model, url, input.apiType))
+		models: input.selectedModels.map((model) =>
+			buildModelConfig(model, input.baseUrl, input.apiType)
+		)
 	};
 
 	// 优先使用用户提供的 settings，否则自动生成

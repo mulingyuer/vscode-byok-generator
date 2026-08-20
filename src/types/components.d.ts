@@ -31,6 +31,7 @@ declare module 'vue' {
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
+    NTooltip: typeof import('naive-ui')['NTooltip']
     OutputToolbar: typeof import('./../components/OutputToolbar.vue')['default']
     ProtocolSelector: typeof import('./../components/ProtocolSelector.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

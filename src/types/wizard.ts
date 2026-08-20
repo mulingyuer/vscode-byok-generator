@@ -21,7 +21,19 @@ export type OutputMode = "full" | "append";
 export type ReasoningEffortFormat = ApiType;
 
 /** 模型厂商 */
-export type ModelVendor = "openai" | "anthropic" | "google" | "qwen" | "deepseek";
+export type ModelVendor =
+	| "openai"
+	| "anthropic"
+	| "google"
+	| "qwen"
+	| "deepseek"
+	| "xai"
+	| "zhipu"
+	| "moonshot"
+	| "minimax"
+	| "xiaomi"
+	| "tencent"
+	| "meituan";
 
 /** 模型预设配置 */
 export interface ModelPreset {

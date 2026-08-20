@@ -1,16 +1,7 @@
 /*
  * @Author: mulingyuer
- * @Date: 2026-08-20 15:15:21
- * @LastEditTime: 2026-08-20 15:15:21
- * @LastEditors: mulingyuer
- * @Description:
- * @FilePath: \vscode-byok-generator\src\hooks\useConfigGenerator.ts
- * 怎么可能会有bug！！！
- */
-/*
- * @Author: mulingyuer
  * @Date: 2026-08-20 10:00:00
- * @LastEditTime: 2026-08-20 10:00:00
+ * @LastEditTime: 2026-08-20 16:11:57
  * @LastEditors: mulingyuer
  * @Description: 配置生成 composable：聚合生成逻辑、加载状态与错误信息（模块级共享生成结果）
  * @FilePath: \vscode-byok-generator\src\hooks\useConfigGenerator.ts

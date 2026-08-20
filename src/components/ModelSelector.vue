@@ -67,7 +67,17 @@
 				@update:checked="(checked: boolean) => handleToggle(model.id, checked)"
 			>
 				<div class="model">
-					<span class="name">{{ model.name }}</span>
+					<span class="name-row">
+						<span class="name">{{ model.name }}</span>
+						<n-tooltip v-if="!hasPreset(model.id)" trigger="hover">
+							<template #trigger>
+								<n-icon class="warning-icon" :size="16">
+									<WarningOutline />
+								</n-icon>
+							</template>
+							该模型使用默认配置，能力标记可能不准确
+						</n-tooltip>
+					</span>
 					<span class="id">{{ model.id }}</span>
 				</div>
 			</n-checkbox>
@@ -88,6 +98,8 @@ import { VENDOR_LABELS, VENDOR_ORDER, presetsToModelItems } from "@/constant/mod
 import { useWizardStore } from "@/stores/wizard";
 import type { FetchMode, ModelItem } from "@/types/wizard";
 import { describeFetchError, fetchRemoteModels } from "@/utils/fetchModels";
+import { matchPreset } from "@/utils/modelMatcher";
+import { WarningOutline } from "@vicons/ionicons5";
 
 const store = useWizardStore();
 const message = useMessage();
@@ -188,6 +200,11 @@ function isChecked(id: string) {
 	return store.selectedModelIds.includes(id);
 }
 
+/** 判断模型是否命中精确或近似预设 */
+function hasPreset(id: string) {
+	return Boolean(matchPreset(id));
+}
+
 /** 切换单个模型的勾选状态 */
 function handleToggle(id: string, checked: boolean) {
 	const selected = isChecked(id);
@@ -263,10 +280,22 @@ function handleInvert() {
 	line-height: 1.4;
 }
 
+.name-row {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-width: 0;
+}
+
 // 模型名称更突出
 .name {
 	font-size: 15px;
 	font-weight: 600;
+}
+
+.warning-icon {
+	flex: 0 0 auto;
+	color: var(--warning-color, #f0a020);
 }
 
 .id {

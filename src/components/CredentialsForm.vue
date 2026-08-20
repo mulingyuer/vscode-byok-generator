@@ -1,73 +1,12 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:09:41
- * @LastEditTime: 2026-08-19 17:45:18
+ * @LastEditTime: 2026-08-20 09:30:00
  * @LastEditors: mulingyuer
  * @Description: 凭证表单（分组名称 / BaseUrl / ApiKey），暴露 validate 供父组件触发生成
  * @FilePath: \vscode-byok-generator\src\components\CredentialsForm.vue
  * 怎么可能会有bug！！！
 -->
-<script setup lang="ts">
-import { computed, ref } from "vue";
-import type { FormInst, FormRules } from "naive-ui";
-import { EyeOutline, EyeOffOutline } from "@vicons/ionicons5";
-import { useWizardStore } from "@/stores/wizard";
-
-const store = useWizardStore();
-const formRef = ref<FormInst | null>(null);
-
-const formValue = computed(() => ({
-	groupName: store.groupName,
-	baseUrl: store.baseUrl,
-	apiKey: store.apiKey
-}));
-
-function isValidHttpUrl(value: string): boolean {
-	try {
-		const url = new URL(value);
-		return url.protocol === "http:" || url.protocol === "https:";
-	} catch {
-		return false;
-	}
-}
-
-const rules: FormRules = {
-	groupName: {
-		required: true,
-		message: "请输入分组名称",
-		trigger: ["blur", "input"]
-	},
-	baseUrl: [
-		{
-			required: true,
-			message: "请输入 BaseUrl",
-			trigger: ["blur", "input"]
-		},
-		{
-			validator(_rule, value: string) {
-				if (!value || isValidHttpUrl(value)) {
-					return true;
-				}
-				return new Error("请输入合法的 HTTP/HTTPS 地址");
-			},
-			trigger: ["blur", "input"]
-		}
-	],
-	apiKey: {
-		required: true,
-		message: "请输入 ApiKey",
-		trigger: ["blur", "input"]
-	}
-};
-
-const apiKeyVisible = ref(false);
-
-// 供父组件在点击"生成"时统一触发校验
-defineExpose({
-	validate: () => formRef.value?.validate()
-});
-</script>
-
 <template>
 	<div class="credentials-form">
 		<n-form
@@ -122,7 +61,68 @@ defineExpose({
 	</div>
 </template>
 
-<style scoped>
+<script setup lang="ts">
+import type { FormInst, FormRules } from "naive-ui";
+import { EyeOffOutline, EyeOutline } from "@vicons/ionicons5";
+import { useWizardStore } from "@/stores/wizard";
+
+const store = useWizardStore();
+const formRef = ref<FormInst | null>(null);
+
+const formValue = computed(() => ({
+	groupName: store.groupName,
+	baseUrl: store.baseUrl,
+	apiKey: store.apiKey
+}));
+
+/** 校验是否为合法的 HTTP/HTTPS 地址 */
+function isValidHttpUrl(value: string): boolean {
+	try {
+		const url = new URL(value);
+		return url.protocol === "http:" || url.protocol === "https:";
+	} catch {
+		return false;
+	}
+}
+
+const rules: FormRules = {
+	groupName: {
+		required: true,
+		message: "请输入分组名称",
+		trigger: ["blur", "input"]
+	},
+	baseUrl: [
+		{
+			required: true,
+			message: "请输入 BaseUrl",
+			trigger: ["blur", "input"]
+		},
+		{
+			validator(_rule, value: string) {
+				if (!value || isValidHttpUrl(value)) {
+					return true;
+				}
+				return new Error("请输入合法的 HTTP/HTTPS 地址");
+			},
+			trigger: ["blur", "input"]
+		}
+	],
+	apiKey: {
+		required: true,
+		message: "请输入 ApiKey",
+		trigger: ["blur", "input"]
+	}
+};
+
+const apiKeyVisible = ref(false);
+
+// 供父组件在点击"生成"时统一触发校验
+defineExpose({
+	validate: () => formRef.value?.validate()
+});
+</script>
+
+<style lang="scss" scoped>
 .credentials-form {
 	display: flex;
 	flex-direction: column;
@@ -143,7 +143,7 @@ defineExpose({
 	line-height: 1.6;
 }
 
-/* 用 CSS 遮罩代替 type="password"，绕过浏览器密码管理器 */
+// 用 CSS 遮罩代替 type="password"，绕过浏览器密码管理器
 :deep(.masked-input) {
 	-webkit-text-security: disc;
 	text-security: disc;

@@ -1,54 +1,12 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:09:41
- * @LastEditTime: 2026-08-19 17:45:46
+ * @LastEditTime: 2026-08-20 09:30:00
  * @LastEditors: mulingyuer
  * @Description: 首页：单页布局，依次排列凭证表单、模型选择、协议选择、操作区与 JSON 编辑器
  * @FilePath: \vscode-byok-generator\src\pages\home.vue
  * 怎么可能会有bug！！！
 -->
-<script setup lang="ts">
-import { ref } from "vue";
-import { useMessage } from "naive-ui";
-import CredentialsForm from "@/components/CredentialsForm.vue";
-import ModelSelector from "@/components/ModelSelector.vue";
-import ProtocolSelector from "@/components/ProtocolSelector.vue";
-import OutputToolbar from "@/components/OutputToolbar.vue";
-import JsonEditor from "@/components/JsonEditor.vue";
-import { useWizardStore } from "@/stores/wizard";
-
-const store = useWizardStore();
-const message = useMessage();
-
-// 凭证表单实例，用于点击"生成"前统一校验
-const credentialsRef = ref<InstanceType<typeof CredentialsForm> | null>(null);
-const generating = ref(false);
-
-async function handleGenerate() {
-	try {
-		await credentialsRef.value?.validate();
-	} catch {
-		// 校验失败时表单项会自行展示错误
-		return;
-	}
-	if (store.selectedCount === 0) {
-		message.warning("请至少选择一个模型");
-		return;
-	}
-	generating.value = true;
-	try {
-		store.generateConfig();
-		message.success("配置已生成");
-	} finally {
-		generating.value = false;
-	}
-}
-
-function handleReset() {
-	store.reset();
-}
-</script>
-
 <template>
 	<div class="page">
 		<header class="header">
@@ -74,7 +32,7 @@ function handleReset() {
 				<n-button
 					size="large"
 					type="primary"
-					:loading="generating"
+					:loading="isGenerating"
 					style="min-width: 120px"
 					@click="handleGenerate"
 				>
@@ -89,13 +47,56 @@ function handleReset() {
 					VS Code 首次使用时会弹出输入框，要求填入 ApiKey。生成结果里不会写入真实密钥。
 				</n-alert>
 				<OutputToolbar />
-				<JsonEditor v-model="store.generatedConfig" />
+				<JsonEditor v-model="generatedConfig" />
 			</div>
 		</n-card>
 	</div>
 </template>
 
-<style scoped>
+<script setup lang="ts">
+import CredentialsForm from "@/components/CredentialsForm.vue";
+import JsonEditor from "@/components/JsonEditor.vue";
+import ModelSelector from "@/components/ModelSelector.vue";
+import OutputToolbar from "@/components/OutputToolbar.vue";
+import ProtocolSelector from "@/components/ProtocolSelector.vue";
+import { useConfigGenerator } from "@/hooks/useConfigGenerator";
+import { useWizardStore } from "@/stores/wizard";
+
+const store = useWizardStore();
+const { generatedConfig, isGenerating, generateConfig, resetGenerated } = useConfigGenerator();
+const message = useMessage();
+
+/** 凭证表单实例，用于点击"生成"前统一校验 */
+const credentialsRef = ref<InstanceType<typeof CredentialsForm> | null>(null);
+
+/** 校验表单并生成配置 */
+async function handleGenerate() {
+	try {
+		await credentialsRef.value?.validate();
+	} catch {
+		// 校验失败时表单项会自行展示错误
+		return;
+	}
+	if (store.selectedCount === 0) {
+		message.warning("请至少选择一个模型");
+		return;
+	}
+	try {
+		await generateConfig();
+		message.success("配置已生成");
+	} catch {
+		message.error("配置生成失败");
+	}
+}
+
+/** 重置所有配置 */
+function handleReset() {
+	store.reset();
+	resetGenerated();
+}
+</script>
+
+<style lang="scss" scoped>
 .page {
 	box-sizing: border-box;
 	max-width: 800px;

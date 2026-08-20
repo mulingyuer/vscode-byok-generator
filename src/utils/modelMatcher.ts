@@ -1,16 +1,17 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:07:09
- * @LastEditTime: 2026-08-19 17:46:20
+ * @LastEditTime: 2026-08-20 09:30:00
  * @LastEditors: mulingyuer
  * @Description: 模型匹配器：用于根据模型 ID 匹配预设模型
  * @FilePath: \vscode-byok-generator\src\utils\modelMatcher.ts
  * 怎么可能会有bug！！！
  */
 
-import { MODEL_PRESETS } from "@/data/modelPresets";
+import { MODEL_PRESETS } from "@/constant/modelPresets";
 import type { ModelPreset } from "@/types/wizard";
 
+/** 规范化模型 ID（小写、去除分隔符） */
 export function normalizeId(id: string): string {
 	return id.toLowerCase().replace(/[-_.\s]+/g, "");
 }
@@ -27,6 +28,7 @@ for (const preset of MODEL_PRESETS) {
 	}
 }
 
+/** 根据模型 ID 查找匹配的预设配置 */
 export function matchPreset(modelId: string): ModelPreset | null {
 	const key = normalizeId(modelId);
 	if (!key) {

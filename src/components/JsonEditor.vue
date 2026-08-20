@@ -1,17 +1,20 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:09:43
- * @LastEditTime: 2026-08-19 15:09:44
+ * @LastEditTime: 2026-08-20 09:30:00
  * @LastEditors: mulingyuer
- * @Description:
+ * @Description: JSON 编辑器，基于 CodeMirror 6，支持 JSON 语法高亮与 lint
  * @FilePath: \vscode-byok-generator\src\components\JsonEditor.vue
  * 怎么可能会有bug！！！
 -->
+<template>
+	<div ref="hostRef" class="editor" />
+</template>
+
 <script setup lang="ts">
 import { json, jsonParseLinter } from "@codemirror/lang-json";
 import { lintGutter, linter } from "@codemirror/lint";
-import { basicSetup, EditorView } from "codemirror";
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { EditorView, basicSetup } from "codemirror";
 
 const props = defineProps<{
 	modelValue: string;
@@ -25,6 +28,7 @@ const hostRef = ref<HTMLDivElement | null>(null);
 let view: EditorView | null = null;
 let syncing = false;
 
+/** 创建 CodeMirror 编辑器实例 */
 function createEditor() {
 	if (!hostRef.value) {
 		return;
@@ -74,11 +78,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<template>
-	<div ref="hostRef" class="editor" />
-</template>
-
-<style scoped>
+<style lang="scss" scoped>
 .editor {
 	overflow: hidden;
 	min-height: 360px;

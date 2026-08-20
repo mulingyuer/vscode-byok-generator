@@ -1,24 +1,12 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:09:42
- * @LastEditTime: 2026-08-19 17:44:58
+ * @LastEditTime: 2026-08-20 09:30:00
  * @LastEditors: mulingyuer
  * @Description: 协议选择器，以卡片形式单选 API 类型（Chat Completions / Responses / Messages）
  * @FilePath: \vscode-byok-generator\src\components\ProtocolSelector.vue
  * 怎么可能会有bug！！！
 -->
-<script setup lang="ts">
-import { PROTOCOL_OPTIONS } from "@/data/protocols";
-import { useWizardStore } from "@/stores/wizard";
-import type { ApiType } from "@/types/wizard";
-
-const store = useWizardStore();
-
-function handleSelect(value: ApiType) {
-	store.apiType = value;
-}
-</script>
-
 <template>
 	<n-radio-group :value="store.apiType" class="cards" @update:value="handleSelect">
 		<label
@@ -37,7 +25,20 @@ function handleSelect(value: ApiType) {
 	</n-radio-group>
 </template>
 
-<style scoped>
+<script setup lang="ts">
+import { PROTOCOL_OPTIONS } from "@/constant/protocols";
+import { useWizardStore } from "@/stores/wizard";
+import type { ApiType } from "@/types/wizard";
+
+const store = useWizardStore();
+
+/** 选择协议类型 */
+function handleSelect(value: ApiType) {
+	store.apiType = value;
+}
+</script>
+
+<style lang="scss" scoped>
 .cards {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -1,10 +1,10 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:07:08
- * @LastEditTime: 2026-08-19 17:45:37
+ * @LastEditTime: 2026-08-20 14:48:04
  * @LastEditors: mulingyuer
  * @Description: 模型预设的静态数据
- * @FilePath: \vscode-byok-generator\src\data\modelPresets.ts
+ * @FilePath: \vscode-byok-generator\src\constant\modelPresets.ts
  * 怎么可能会有bug！！！
  */
 import type { ModelItem, ModelPreset, ModelVendor } from "@/types/wizard";

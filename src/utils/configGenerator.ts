@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:07:09
- * @LastEditTime: 2026-08-19 17:46:07
+ * @LastEditTime: 2026-08-20 09:30:00
  * @LastEditors: mulingyuer
  * @Description: 配置生成器工具函数
  * @FilePath: \vscode-byok-generator\src\utils\configGenerator.ts
@@ -17,6 +17,7 @@ import type {
 } from "@/types/wizard";
 import { matchPreset } from "@/utils/modelMatcher";
 
+/** 模型默认值 */
 export const DEFAULT_MODEL_LIMITS = {
 	maxInputTokens: 128000,
 	maxOutputTokens: 8192,
@@ -33,6 +34,7 @@ const API_PATHS: Record<ApiType, string> = {
 const EXPLICIT_API_PATH = /\/(chat\/completions|responses|messages)$/i;
 const VERSION_SEGMENT = /\/v\d+$/i;
 
+/** 将分组名称转换为 input 变量 slug */
 export function toInputSlug(groupName: string): string {
 	const slug = groupName
 		.trim()
@@ -42,6 +44,7 @@ export function toInputSlug(groupName: string): string {
 	return slug || "apikey";
 }
 
+/** 根据 baseUrl 和协议类型解析完整的模型 API 地址 */
 export function resolveModelUrl(baseUrl: string, apiType: ApiType): string {
 	const trimmed = baseUrl.trim().replace(/\/+$/, "");
 	if (!trimmed) {
@@ -54,6 +57,7 @@ export function resolveModelUrl(baseUrl: string, apiType: ApiType): string {
 	return `${withVersion}${API_PATHS[apiType]}`;
 }
 
+/** 标准化 SDK 用的 baseUrl（去掉 API 路径，保留版本段） */
 export function normalizeSdkBaseUrl(baseUrl: string): string {
 	const trimmed = baseUrl.trim().replace(/\/+$/, "");
 	if (!trimmed) {
@@ -68,6 +72,7 @@ export function normalizeSdkBaseUrl(baseUrl: string): string {
 	return `${trimmed}/v1`;
 }
 
+/** 构建单个模型的配置对象 */
 function buildModelConfig(model: ModelItem, url: string, apiType: ApiType): GeneratedModelConfig {
 	const preset = matchPreset(model.id);
 	const config: GeneratedModelConfig = {
@@ -94,6 +99,7 @@ function buildModelConfig(model: ModelItem, url: string, apiType: ApiType): Gene
 	return config;
 }
 
+/** 生成完整的 Provider 配置对象 */
 export function generateProviderConfig(input: GenerateConfigInput): GeneratedProviderConfig {
 	const url = resolveModelUrl(input.baseUrl, input.apiType);
 	const slug = toInputSlug(input.groupName);
@@ -107,6 +113,7 @@ export function generateProviderConfig(input: GenerateConfigInput): GeneratedPro
 	};
 }
 
+/** 将配置对象序列化为 JSON 字符串 */
 export function serializeConfig(
 	provider: GeneratedProviderConfig,
 	mode: "full" | "append"

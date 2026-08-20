@@ -26,6 +26,8 @@ export const useWizardStore = defineStore("wizard", () => {
 	const apiType = ref<ApiType>("chat-completions");
 	/** 输出模式 */
 	const outputMode = ref<OutputMode>("full");
+	/** 模型额外设置（JSON 字符串，格式为 Record<modelId, config>） */
+	const modelSettings = ref("");
 
 	/** 已勾选的完整模型对象列表 */
 	const selectedModels = computed(() => {
@@ -78,6 +80,7 @@ export const useWizardStore = defineStore("wizard", () => {
 		selectedModelIds.value = [];
 		apiType.value = "chat-completions";
 		outputMode.value = "full";
+		modelSettings.value = "";
 	}
 
 	return {
@@ -91,6 +94,7 @@ export const useWizardStore = defineStore("wizard", () => {
 		selectedCount,
 		apiType,
 		outputMode,
+		modelSettings,
 		toggleModel,
 		selectAll,
 		invertSelection,

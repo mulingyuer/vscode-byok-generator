@@ -39,7 +39,8 @@ export function useConfigGenerator() {
 				groupName: store.groupName,
 				apiType: store.apiType,
 				baseUrl: store.baseUrl,
-				selectedModels: store.selectedModels
+				selectedModels: store.selectedModels,
+				modelSettings: store.modelSettings
 			});
 			generatedConfig.value = serializeConfig(provider, store.outputMode);
 			return generatedConfig.value;

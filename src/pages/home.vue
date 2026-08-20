@@ -27,6 +27,24 @@
 		</n-card>
 
 		<n-card class="card">
+			<n-collapse>
+				<n-collapse-item title="模型设置（可选）" name="settings">
+					<p class="field-hint">
+						为每个模型配置额外的参数（如 temperature、reasoningEffort 等），格式为
+						JSON：{"{"}"model-id": {"{"}"temperature": 0.7{"}"}{"}"}
+					</p>
+					<n-input
+						v-model:value="store.modelSettings"
+						type="textarea"
+						placeholder='例如：{"gpt-4o": {"temperature": 0.7, "reasoningEffort": "high"}}'
+						:rows="4"
+						clearable
+					/>
+				</n-collapse-item>
+			</n-collapse>
+		</n-card>
+
+		<n-card class="card">
 			<div class="action-bar">
 				<n-button size="large" @click="handleReset">重置</n-button>
 				<n-button
@@ -168,5 +186,12 @@ function handleReset() {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+}
+
+.field-hint {
+	margin: 0 0 8px;
+	color: var(--n-text-color-3, #8b8b8b);
+	font-size: 12px;
+	line-height: 1.6;
 }
 </style>

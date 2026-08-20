@@ -99,18 +99,70 @@ function buildModelConfig(model: ModelItem, url: string, apiType: ApiType): Gene
 	return config;
 }
 
+/** 为支持 reasoning 的模型自动生成默认 settings */
+function generateDefaultSettings(
+	models: ModelItem[]
+): Record<string, Record<string, unknown>> | undefined {
+	const settings: Record<string, Record<string, unknown>> = {};
+	let hasSettings = false;
+
+	for (const model of models) {
+		const preset = matchPreset(model.id);
+		if (preset?.thinking && preset.supportsReasoningEffort?.length) {
+			settings[model.id] = {
+				reasoningEffort: "medium"
+			};
+			hasSettings = true;
+		}
+	}
+
+	return hasSettings ? settings : undefined;
+}
+
 /** 生成完整的 Provider 配置对象 */
 export function generateProviderConfig(input: GenerateConfigInput): GeneratedProviderConfig {
 	const url = resolveModelUrl(input.baseUrl, input.apiType);
 	const slug = toInputSlug(input.groupName);
 
-	return {
+	const config: GeneratedProviderConfig = {
 		name: input.groupName.trim() || "Custom Endpoint",
 		vendor: "customendpoint",
 		apiKey: `\${input:${slug}}`,
 		apiType: input.apiType,
 		models: input.selectedModels.map((model) => buildModelConfig(model, url, input.apiType))
 	};
+
+	// 优先使用用户提供的 settings，否则自动生成
+	if (input.modelSettings) {
+		const settings = parseModelSettings(input.modelSettings);
+		if (settings) {
+			config.settings = settings;
+		}
+	} else {
+		const defaultSettings = generateDefaultSettings(input.selectedModels);
+		if (defaultSettings) {
+			config.settings = defaultSettings;
+		}
+	}
+
+	return config;
+}
+
+/** 解析模型设置 JSON 字符串，返回 Record<modelId, config> 或 undefined */
+function parseModelSettings(json: string): Record<string, Record<string, unknown>> | undefined {
+	const trimmed = json.trim();
+	if (!trimmed) {
+		return undefined;
+	}
+	try {
+		const parsed = JSON.parse(trimmed);
+		if (typeof parsed === "object" && parsed !== null && !Array.isArray(parsed)) {
+			return parsed as Record<string, Record<string, unknown>>;
+		}
+	} catch {
+		// 解析失败时忽略 settings
+	}
+	return undefined;
 }
 
 /** 将配置对象序列化为 JSON 字符串 */

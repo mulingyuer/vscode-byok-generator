@@ -103,6 +103,8 @@ export interface GeneratedProviderConfig {
 	apiType: ApiType;
 	/** 模型列表 */
 	models: GeneratedModelConfig[];
+	/** 每个模型的额外配置（key 为模型 ID，value 为该模型的配置参数） */
+	settings?: Record<string, Record<string, unknown>>;
 }
 
 /** 生成配置的输入参数 */
@@ -115,6 +117,8 @@ export interface GenerateConfigInput {
 	baseUrl: string;
 	/** 已选中的模型列表 */
 	selectedModels: ModelItem[];
+	/** 模型额外设置（JSON 字符串，格式为 Record<modelId, config>） */
+	modelSettings?: string;
 }
 
 /** 协议选项 */

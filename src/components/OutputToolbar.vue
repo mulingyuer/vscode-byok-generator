@@ -16,6 +16,7 @@
 		</n-radio-group>
 		<div class="actions">
 			<n-button :disabled="!generatedConfig" @click="handleFormat">格式化</n-button>
+			<n-button :disabled="!generatedConfig" @click="handleSave">保存</n-button>
 			<n-button type="primary" :disabled="!generatedConfig" @click="handleCopy">复制</n-button>
 		</div>
 	</div>
@@ -69,6 +70,40 @@ async function handleCopy() {
 		message.success("已复制到剪贴板");
 	} catch {
 		message.error("复制失败，请手动选择文本复制");
+	}
+}
+
+/** 清洗文件名中的非法字符（\/:*?"<>| 替换为 -） */
+function sanitizeFileName(name: string): string {
+	return name.replace(/[\\/:*?"<>|]/g, "-");
+}
+
+/** 生成下载文件名：{分组名称}-{全新添加|追加}-{YYYY-MM-DD}.json */
+function buildSaveFileName(): string {
+	const groupName = sanitizeFileName(store.groupName.trim()) || "byok-config";
+	const modeLabel = store.outputMode === "full" ? "全新添加" : "追加";
+	const now = new Date();
+	const date = [
+		now.getFullYear(),
+		String(now.getMonth() + 1).padStart(2, "0"),
+		String(now.getDate()).padStart(2, "0")
+	].join("-");
+	return `${groupName}-${modeLabel}-${date}.json`;
+}
+
+/** 将生成结果按原文保存为本地 JSON 文件（不做强校验） */
+function handleSave() {
+	try {
+		const blob = new Blob([generatedConfig.value], { type: "application/json" });
+		const url = URL.createObjectURL(blob);
+		const anchor = document.createElement("a");
+		anchor.href = url;
+		anchor.download = buildSaveFileName();
+		anchor.click();
+		URL.revokeObjectURL(url);
+		message.success("已保存");
+	} catch {
+		message.error("保存失败");
 	}
 }
 </script>

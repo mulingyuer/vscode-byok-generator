@@ -9,6 +9,20 @@
  */
 import type { ApiType, FetchMode, ModelItem, OutputMode } from "@/types/wizard";
 
+/** 凭证缓存 localStorage key */
+const CREDENTIALS_STORAGE_KEY = "byok:credentials";
+/** 凭证缓存开关 localStorage key */
+const CREDENTIALS_ENABLED_STORAGE_KEY = "byok:credentials-enabled";
+
+/** 读取开关初始值（默认开启） */
+function readCredentialsCacheEnabled(): boolean {
+	try {
+		return localStorage.getItem(CREDENTIALS_ENABLED_STORAGE_KEY) !== "false";
+	} catch {
+		return true;
+	}
+}
+
 export const useWizardStore = defineStore("wizard", () => {
 	/** 分组名称 */
 	const groupName = ref("");
@@ -16,6 +30,8 @@ export const useWizardStore = defineStore("wizard", () => {
 	const baseUrl = ref("");
 	/** 密钥 */
 	const apiKey = ref("");
+	/** 凭证本地缓存开关（默认开启，开关状态本身也持久化） */
+	const credentialsCacheEnabled = ref(readCredentialsCacheEnabled());
 	/** 模型获取方式 */
 	const fetchMode = ref<FetchMode>("auto");
 	/** 可选模型列表 */
@@ -70,7 +86,58 @@ export const useWizardStore = defineStore("wizard", () => {
 		selectedModelIds.value = [...current];
 	}
 
-	/** 重置所有状态 */
+	/** 将凭证写入 localStorage（仅在缓存开启时调用） */
+	function saveCredentials() {
+		try {
+			localStorage.setItem(
+				CREDENTIALS_STORAGE_KEY,
+				JSON.stringify({
+					groupName: groupName.value,
+					baseUrl: baseUrl.value,
+					apiKey: apiKey.value
+				})
+			);
+		} catch {
+			// localStorage 不可用时静默失败
+		}
+	}
+
+	/** 从 localStorage 读取凭证并填充（仅在缓存开启时调用） */
+	function loadCredentials() {
+		try {
+			const raw = localStorage.getItem(CREDENTIALS_STORAGE_KEY);
+			if (!raw) {
+				return;
+			}
+			const cached = JSON.parse(raw) as Partial<{
+				groupName: string;
+				baseUrl: string;
+				apiKey: string;
+			}>;
+			if (typeof cached.groupName === "string") {
+				groupName.value = cached.groupName;
+			}
+			if (typeof cached.baseUrl === "string") {
+				baseUrl.value = cached.baseUrl;
+			}
+			if (typeof cached.apiKey === "string") {
+				apiKey.value = cached.apiKey;
+			}
+		} catch {
+			// 缓存损坏时静默失败
+		}
+	}
+
+	/** 清除 localStorage 中的凭证缓存 */
+	function clearCredentials() {
+		try {
+			localStorage.removeItem(CREDENTIALS_STORAGE_KEY);
+		} catch {
+			// localStorage 不可用时静默失败
+		}
+	}
+
+	/** 重置所有状态（缓存开启时同步清除已缓存凭证） */
 	function reset() {
 		groupName.value = "";
 		baseUrl.value = "";
@@ -81,12 +148,16 @@ export const useWizardStore = defineStore("wizard", () => {
 		apiType.value = "chat-completions";
 		outputMode.value = "full";
 		modelSettings.value = "";
+		if (credentialsCacheEnabled.value) {
+			clearCredentials();
+		}
 	}
 
 	return {
 		groupName,
 		baseUrl,
 		apiKey,
+		credentialsCacheEnabled,
 		fetchMode,
 		availableModels,
 		selectedModelIds,
@@ -98,6 +169,9 @@ export const useWizardStore = defineStore("wizard", () => {
 		toggleModel,
 		selectAll,
 		invertSelection,
+		saveCredentials,
+		loadCredentials,
+		clearCredentials,
 		reset
 	};
 });

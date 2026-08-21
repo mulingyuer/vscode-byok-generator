@@ -10,6 +10,7 @@
 import type { ModelItem, ModelPreset, ModelVendor } from "@/types/wizard";
 import { ANTHROPIC_PRESETS } from "./providers/anthropic";
 import { DEEPSEEK_PRESETS } from "./providers/deepseek";
+import { DOUBAO_PRESETS } from "./providers/doubao";
 import { GOOGLE_PRESETS } from "./providers/google";
 import { MEITUAN_PRESETS } from "./providers/meituan";
 import { MINIMAX_PRESETS } from "./providers/minimax";
@@ -35,6 +36,7 @@ export const VENDOR_ORDER: ModelVendor[] = [
 	"moonshot",
 	"minimax",
 	"xiaomi",
+	"doubao",
 	"tencent",
 	"meituan"
 ];
@@ -51,6 +53,7 @@ export const VENDOR_LABELS: Record<ModelVendor, string> = {
 	moonshot: "Moonshot",
 	minimax: "MiniMax",
 	xiaomi: "小米",
+	doubao: "豆包",
 	tencent: "腾讯",
 	meituan: "美团"
 };
@@ -67,6 +70,7 @@ const VENDOR_PRESETS_MAP: Record<ModelVendor, ModelPreset[]> = {
 	moonshot: MOONSHOT_PRESETS,
 	minimax: MINIMAX_PRESETS,
 	xiaomi: XIAOMI_PRESETS,
+	doubao: DOUBAO_PRESETS,
 	tencent: TENCENT_PRESETS,
 	meituan: MEITUAN_PRESETS
 };

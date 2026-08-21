@@ -14,12 +14,21 @@ import { preset } from "../modelPresetFactory";
 // 当前 maxInputTokens 参考 hunyuan-standard-256K 升级代取保守值，待 TokenHub 文档完善后更新
 export const TENCENT_PRESETS: ModelPreset[] = [
 	preset("tencent", "hy3", "Hunyuan 3.0", {
+		// HY3-Preview 为同一模型的另一种官方写法，归入本条目 patterns
 		maxInputTokens: 256000,
 		maxOutputTokens: 8192,
 		contextWindow: 256000,
 		toolCalling: true,
 		vision: false,
 		thinking: false,
-		patterns: ["hy3", "hunyuan-3.0", "hunyuan3", "hunyuan-3", "hunyuan-3.0-preview"]
+		patterns: [
+			"hy3",
+			"hy3-preview",
+			"hy3preview",
+			"hunyuan-3.0",
+			"hunyuan3",
+			"hunyuan-3",
+			"hunyuan-3.0-preview"
+		]
 	})
 ];

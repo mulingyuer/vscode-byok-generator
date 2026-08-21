@@ -79,7 +79,6 @@ export function preset(
 		vision: options.vision,
 		thinking: options.thinking,
 		supportsReasoningEffort: options.supportsReasoningEffort,
-		reasoningEffortFormat: options.reasoningEffortFormat,
 		apiType: options.apiType
 	};
 }

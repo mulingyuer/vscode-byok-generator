@@ -10,8 +10,30 @@
 import type { ModelPreset } from "@/types/wizard";
 import { STANDARD_REASONING, ZHIPU_GLM53_REASONING, preset } from "../modelPresetFactory";
 
-// 官方：glm-5.x 三款输入模态均为「文本」，vision 全部为 false
+// 官方：glm-5.x 各款输入模态均为「文本」，vision 全部为 false
 export const ZHIPU_PRESETS: ModelPreset[] = [
+	preset("zhipu", "glm-5", "GLM-5", {
+		// 官方：200K 上下文，128K 输出，thinking 可开关（thinking:{"type":"enabled"}），effort 档位同 5.2/5.1
+		maxInputTokens: 200000,
+		maxOutputTokens: 128000,
+		contextWindow: 200000,
+		toolCalling: true,
+		vision: false,
+		thinking: true,
+		supportsReasoningEffort: STANDARD_REASONING,
+		patterns: ["glm-5", "glm5"]
+	}),
+	preset("zhipu", "glm-5-turbo", "GLM-5-Turbo", {
+		// 官方：200K 上下文，128K 输出，thinking 可开关（thinking:{"type":"enabled"}），effort 档位同 5.2/5.1
+		maxInputTokens: 200000,
+		maxOutputTokens: 128000,
+		contextWindow: 200000,
+		toolCalling: true,
+		vision: false,
+		thinking: true,
+		supportsReasoningEffort: STANDARD_REASONING,
+		patterns: ["glm-5-turbo", "glm5turbo", "glm-5turbo"]
+	}),
 	preset("zhipu", "glm-5.3", "GLM-5.3", {
 		// 官方：thinking 常开不可关，effort 仅 low/high/max（默认 max）
 		maxInputTokens: 1000000,

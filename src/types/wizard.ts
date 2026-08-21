@@ -17,9 +17,6 @@ export type FetchMode = "auto" | "preset";
 /** 输出模式 */
 export type OutputMode = "full" | "append";
 
-/** 推理级别的格式类型 */
-export type ReasoningEffortFormat = ApiType;
-
 /** 模型厂商 */
 export type ModelVendor =
 	| "openai"
@@ -32,6 +29,7 @@ export type ModelVendor =
 	| "moonshot"
 	| "minimax"
 	| "xiaomi"
+	| "doubao"
 	| "tencent"
 	| "meituan";
 
@@ -57,8 +55,6 @@ export interface ModelPreset {
 	thinking: boolean;
 	/** 支持的推理级别列表 */
 	supportsReasoningEffort?: string[];
-	/** 推理级别格式 */
-	reasoningEffortFormat?: ReasoningEffortFormat;
 	/** API 协议类型 */
 	apiType?: ApiType;
 	/** 模型 ID 匹配模式 */
@@ -97,8 +93,6 @@ export interface GeneratedModelConfig {
 	thinking?: boolean;
 	/** 支持的推理级别列表 */
 	supportsReasoningEffort?: string[];
-	/** 推理级别格式 */
-	reasoningEffortFormat?: ReasoningEffortFormat;
 	/** API 协议类型 */
 	apiType?: ApiType;
 }

@@ -9,7 +9,6 @@
  */
 
 import type {
-	ApiType,
 	GenerateConfigInput,
 	GeneratedModelConfig,
 	GeneratedProviderConfig,
@@ -20,12 +19,6 @@ import { matchPreset } from "@/utils/modelMatcher";
 
 /** 模型默认值（未匹配预设时的兜底，来源统一收敛到 modelPresets/defaults.ts） */
 export const DEFAULT_MODEL_LIMITS = FALLBACK_MODEL_DEFAULTS;
-
-const API_PATHS: Record<ApiType, string> = {
-	"chat-completions": "/chat/completions",
-	responses: "/responses",
-	messages: "/messages"
-};
 
 const EXPLICIT_API_PATH = /\/(chat\/completions|responses|messages)$/i;
 const VERSION_SEGMENT = /\/v\d+$/i;
@@ -40,17 +33,9 @@ export function toInputSlug(groupName: string): string {
 	return slug || "apikey";
 }
 
-/** 根据 baseUrl 和协议类型解析完整的模型 API 地址 */
-export function resolveModelUrl(baseUrl: string, apiType: ApiType): string {
-	const trimmed = baseUrl.trim().replace(/\/+$/, "");
-	if (!trimmed) {
-		return trimmed;
-	}
-	if (EXPLICIT_API_PATH.test(trimmed)) {
-		return trimmed;
-	}
-	const withVersion = VERSION_SEGMENT.test(trimmed) ? trimmed : `${trimmed}/v1`;
-	return `${withVersion}${API_PATHS[apiType]}`;
+/** 规范化用户填写的 baseUrl（去空白、去末尾斜杠），VS Code 会自行补全 API 路径 */
+function normalizeBaseUrl(baseUrl: string): string {
+	return baseUrl.trim().replace(/\/+$/, "");
 }
 
 /** 标准化 SDK 用的 baseUrl（去掉 API 路径，保留版本段） */
@@ -69,17 +54,12 @@ export function normalizeSdkBaseUrl(baseUrl: string): string {
 }
 
 /** 构建单个模型的配置对象 */
-function buildModelConfig(
-	model: ModelItem,
-	baseUrl: string,
-	providerApiType: ApiType
-): GeneratedModelConfig {
+function buildModelConfig(model: ModelItem, baseUrl: string): GeneratedModelConfig {
 	const preset = matchPreset(model.id);
-	const modelApiType = preset?.apiType ?? providerApiType;
 	const config: GeneratedModelConfig = {
 		id: model.id,
 		name: model.name || preset?.displayName || model.id,
-		url: resolveModelUrl(baseUrl, modelApiType),
+		url: normalizeBaseUrl(baseUrl),
 		apiType: preset?.apiType,
 		toolCalling: preset?.toolCalling ?? DEFAULT_MODEL_LIMITS.toolCalling,
 		vision: preset?.vision ?? DEFAULT_MODEL_LIMITS.vision,
@@ -96,10 +76,21 @@ function buildModelConfig(
 	}
 	if (preset?.supportsReasoningEffort?.length) {
 		config.supportsReasoningEffort = [...preset.supportsReasoningEffort];
-		config.reasoningEffortFormat = modelApiType;
 	}
 
 	return config;
+}
+
+/** 从预设的推理档位推导默认 reasoningEffort：优先 medium，其次 high，否则取最后一档 */
+function resolveDefaultReasoningEffort(supportsReasoningEffort: string[]): string {
+	if (supportsReasoningEffort.includes("medium")) {
+		return "medium";
+	}
+	if (supportsReasoningEffort.includes("high")) {
+		return "high";
+	}
+	// 调用处已保证数组非空
+	return supportsReasoningEffort[supportsReasoningEffort.length - 1]!;
 }
 
 /** 为支持 reasoning 的模型自动生成默认 settings */
@@ -113,7 +104,7 @@ function generateDefaultSettings(
 		const preset = matchPreset(model.id);
 		if (preset?.thinking && preset.supportsReasoningEffort?.length) {
 			settings[model.id] = {
-				reasoningEffort: "medium"
+				reasoningEffort: resolveDefaultReasoningEffort(preset.supportsReasoningEffort)
 			};
 			hasSettings = true;
 		}
@@ -131,9 +122,7 @@ export function generateProviderConfig(input: GenerateConfigInput): GeneratedPro
 		vendor: "customendpoint",
 		apiKey: `\${input:${slug}}`,
 		apiType: input.apiType,
-		models: input.selectedModels.map((model) =>
-			buildModelConfig(model, input.baseUrl, input.apiType)
-		)
+		models: input.selectedModels.map((model) => buildModelConfig(model, input.baseUrl))
 	};
 
 	// 优先使用用户提供的 settings，否则自动生成

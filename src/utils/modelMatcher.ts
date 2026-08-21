@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:07:09
- * @LastEditTime: 2026-08-20 09:30:00
+ * @LastEditTime: 2026-08-21 00:00:00
  * @LastEditors: mulingyuer
  * @Description: 模型匹配器：用于根据模型 ID 匹配预设模型
  * @FilePath: \vscode-byok-generator\src\utils\modelMatcher.ts
@@ -39,6 +39,25 @@ function isVersionSuffix(suffix: string): boolean {
 	return /^\d{4,}$/.test(suffix);
 }
 
+/** 代表真实模型系列的后缀保留词，命中则不视为网关变体 */
+const RESERVED_MODEL_SUFFIXES = new Set([
+	"mini",
+	"plus",
+	"flash",
+	"pro",
+	"turbo",
+	"preview",
+	"code",
+	"instruct",
+	"vision",
+	"audio"
+]);
+
+/** 判断剩余后缀是否是网关渠道/路由变体（如 anti、ent、high、aws、or、kiro） */
+function isGatewayVariantSuffix(suffix: string): boolean {
+	return /^[a-z][a-z0-9]*$/.test(suffix) && !RESERVED_MODEL_SUFFIXES.has(suffix);
+}
+
 /** 根据模型 ID 查找匹配的预设配置 */
 export function matchPreset(modelId: string): ModelPreset | null {
 	const key = normalizeId(modelId);
@@ -51,7 +70,10 @@ export function matchPreset(modelId: string): ModelPreset | null {
 	}
 	return (
 		NORMALIZED_PRESETS.find((entry) => {
-			return key.startsWith(entry.key) && isVersionSuffix(key.slice(entry.key.length));
+			const suffix = key.slice(entry.key.length);
+			return (
+				key.startsWith(entry.key) && (isVersionSuffix(suffix) || isGatewayVariantSuffix(suffix))
+			);
 		})?.preset ?? null
 	);
 }

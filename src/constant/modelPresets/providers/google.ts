@@ -63,6 +63,17 @@ export const GOOGLE_PRESETS: ModelPreset[] = [
 		supportsReasoningEffort: GOOGLE_REASONING_WITH_MINIMAL,
 		patterns: ["gemini-3.1-flash", "gemini31flash", "gemini-3.1-flash-lite", "gemini31flashlite"]
 	}),
+	preset("google", "gemini-3-flash-preview", "Gemini 3 Flash Preview", {
+		// 官方：1M 输入 / 65K 输出，支持思考（thinking 默认开启），与 3.x Flash 系列一致支持 minimal 档
+		maxInputTokens: 1048576,
+		maxOutputTokens: 65536,
+		contextWindow: 1048576,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: GOOGLE_REASONING_WITH_MINIMAL,
+		patterns: ["gemini-3-flash-preview", "gemini3flashpreview", "gemini-3-flash"]
+	}),
 	preset("google", "gemini-2.5-flash", "Gemini 2.5 Flash", {
 		maxInputTokens: 1048576,
 		maxOutputTokens: 65536,

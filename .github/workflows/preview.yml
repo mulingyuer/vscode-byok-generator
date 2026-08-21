@@ -1,0 +1,46 @@
+name: 打包并输出到preview分支进行预览
+
+# 检测只有主分支的push操作会触发该工作流
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # 允许手动触发该工作流
+
+jobs:
+  build:
+    name: 打包
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 确保有写权限
+
+    steps:
+      - name: 克隆仓库
+        uses: actions/checkout@v4
+        with:
+          ref: main # 指定主分支
+
+      - name: 安装pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0 # 与 package.json 的 packageManager 字段保持一致
+
+      - name: 指定Node.js版本
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24 # LTS 版本，与 @types/node、@tsconfig/node24 对齐
+          cache: pnpm # 缓存依赖加速构建（需先安装 pnpm）
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      - name: 打包
+        run: pnpm build --mode github-preview
+
+      - name: 部署到preview分支
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: preview
+          full_commit_message: ${{ github.event.head_commit.message }}

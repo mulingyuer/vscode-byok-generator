@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-19 15:09:40
- * @LastEditTime: 2026-08-20 09:30:00
+ * @LastEditTime: 2026-08-23 09:55:18
  * @LastEditors: mulingyuer
  * @Description: 获取模型列表
  * @FilePath: \vscode-byok-generator\src\utils\fetchModels.ts
@@ -12,11 +12,13 @@ import OpenAI from "openai";
 import { normalizeSdkBaseUrl } from "@/utils/configGenerator";
 import type { ModelItem } from "@/types/wizard";
 
+const CORS_PROXY = import.meta.env.VITE_CORS_PROXY || "";
+
 /** 通过 OpenAI SDK 从网关拉取模型列表 */
 export async function fetchRemoteModels(baseUrl: string, apiKey: string): Promise<ModelItem[]> {
 	const client = new OpenAI({
 		apiKey,
-		baseURL: normalizeSdkBaseUrl(baseUrl),
+		baseURL: `${CORS_PROXY}?url=${encodeURIComponent(normalizeSdkBaseUrl(baseUrl))}`,
 		dangerouslyAllowBrowser: true
 	});
 

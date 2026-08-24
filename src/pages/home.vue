@@ -12,15 +12,26 @@
 		<header class="header">
 			<h1>VS Code BYOK 配置生成器</h1>
 			<p>在一个页面内完成所有配置，生成可粘贴到 chatLanguageModels.json 的 Custom Endpoint。</p>
-			<a
-				class="github-link"
-				href="https://github.com/mulingyuer/vscode-byok-generator"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
-				<n-icon :size="16" :component="LogoGithub" />
-				<span>GitHub</span>
-			</a>
+			<div class="header-links">
+				<a
+					class="github-link"
+					href="https://github.com/mulingyuer/vscode-byok-generator"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<n-icon :size="16" :component="LogoGithub" />
+					<span>GitHub</span>
+				</a>
+				<a
+					class="tutorial-link"
+					href="https://www.mulingyuer.com/archives/1172/"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<n-icon :size="16" :component="BookOutline" />
+					<span>使用教程</span>
+				</a>
+			</div>
 		</header>
 
 		<n-card class="card" title="凭证">
@@ -81,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { LogoGithub } from "@vicons/ionicons5";
+import { LogoGithub, BookOutline } from "@vicons/ionicons5";
 import CredentialsForm from "@/components/CredentialsForm.vue";
 import JsonEditor from "@/components/JsonEditor.vue";
 import ModelSelector from "@/components/ModelSelector.vue";
@@ -176,11 +187,17 @@ function handleReset() {
 	font-size: 15px;
 }
 
-.github-link {
+.header-links {
+	display: flex;
+	gap: 12px;
+	margin-top: 12px;
+}
+
+.github-link,
+.tutorial-link {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
-	margin-top: 12px;
 	padding: 6px 12px;
 	border-radius: 6px;
 	color: #374151;
@@ -191,7 +208,8 @@ function handleReset() {
 	transition: background-color 0.2s ease;
 }
 
-.github-link:hover {
+.github-link:hover,
+.tutorial-link:hover {
 	background-color: #e5e7eb;
 }
 

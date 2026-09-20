@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-20 15:00:00
- * @LastEditTime: 2026-08-20 18:02:43
+ * @LastEditTime: 2026-09-20 00:00:00
  * @LastEditors: mulingyuer
  * @Description: 模型预设工厂函数与各厂商推理等级常量
  * @FilePath: \vscode-byok-generator\src\constant\modelPresets\modelPresetFactory.ts
@@ -21,6 +21,14 @@ import type {
 export const OPENAI_REASONING: OpenAIReasoningEffort[] = ["none", "low", "medium", "high", "xhigh"];
 export const OPENAI_REASONING_WITH_MAX: OpenAIReasoningEffort[] = [
 	"none",
+	"low",
+	"medium",
+	"high",
+	"xhigh",
+	"max"
+];
+/** gpt-6 系列（无 none，含 max） */
+export const OPENAI_REASONING_NO_NONE: OpenAIReasoningEffort[] = [
 	"low",
 	"medium",
 	"high",

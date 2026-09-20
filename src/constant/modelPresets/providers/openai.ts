@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2026-08-20 15:00:00
- * @LastEditTime: 2026-08-20 18:03:33
+ * @LastEditTime: 2026-09-20 00:00:00
  * @LastEditors: mulingyuer
  * @Description: OpenAI 模型预设（来源：developers.openai.com/api/docs/models）
  * @FilePath: \vscode-byok-generator\src\constant\modelPresets\providers\openai.ts
@@ -11,11 +11,22 @@ import type { ModelPreset } from "@/types/wizard";
 import {
 	OPENAI_CODEX_REASONING,
 	OPENAI_REASONING,
+	OPENAI_REASONING_NO_NONE,
 	OPENAI_REASONING_WITH_MAX,
 	preset
 } from "../modelPresetFactory";
 
 export const OPENAI_PRESETS: ModelPreset[] = [
+	preset("openai", "gpt-6-astra", "GPT-6 Astra", {
+		maxInputTokens: 922000,
+		maxOutputTokens: 128000,
+		contextWindow: 1050000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: OPENAI_REASONING_NO_NONE,
+		patterns: ["gpt-6-astra", "gpt6astra", "gpt-6astra", "gpt-6", "gpt6"]
+	}),
 	preset("openai", "gpt-5.6-sol", "GPT-5.6 Sol", {
 		maxInputTokens: 1050000,
 		maxOutputTokens: 128000,

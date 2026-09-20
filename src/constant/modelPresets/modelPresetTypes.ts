@@ -25,3 +25,6 @@ export type ZhipuReasoningEffort = "low" | "high" | "max";
 
 /** 月之暗面 Kimi 推理等级（k3 仅 low/high/max） */
 export type MoonshotReasoningEffort = "low" | "high" | "max";
+
+/** 腾讯混元推理等级（HY4 仅 low/high，none 为关闭思考而非档位） */
+export type TencentReasoningEffort = "low" | "high";

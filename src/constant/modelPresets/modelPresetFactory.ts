@@ -14,6 +14,7 @@ import type {
 	MoonshotReasoningEffort,
 	OpenAIReasoningEffort,
 	StandardReasoningEffort,
+	TencentReasoningEffort,
 	ZhipuReasoningEffort
 } from "./modelPresetTypes";
 
@@ -65,6 +66,9 @@ export const ZHIPU_GLM53_REASONING: ZhipuReasoningEffort[] = ["low", "high", "ma
 
 /** 月之暗面 Kimi k3 档位（无 medium） */
 export const MOONSHOT_K3_REASONING: MoonshotReasoningEffort[] = ["low", "high", "max"];
+
+/** 腾讯混元 HY4 档位（无 medium，none 为关闭思考） */
+export const TENCENT_HY4_REASONING: TencentReasoningEffort[] = ["low", "high"];
 
 /** 创建一条模型预设 */
 export function preset(

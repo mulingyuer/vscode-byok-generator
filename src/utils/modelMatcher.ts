@@ -11,9 +11,10 @@
 import { MODEL_PRESETS } from "@/constant/modelPresets";
 import type { ModelPreset } from "@/types/wizard";
 
-/** 规范化模型 ID（小写、去除分隔符） */
+/** 规范化模型 ID（移除厂商命名空间、小写并去除分隔符） */
 export function normalizeId(id: string): string {
-	return id.toLowerCase().replace(/[-_.\s]+/g, "");
+	const modelId = id.split("/").pop() ?? "";
+	return modelId.toLowerCase().replace(/[-_.\s]+/g, "");
 }
 
 const PRESET_INDEX = new Map<string, ModelPreset>();

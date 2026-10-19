@@ -45,6 +45,28 @@ export const ZHIPU_PRESETS: ModelPreset[] = [
 		supportsReasoningEffort: ZHIPU_GLM53_REASONING,
 		patterns: ["glm-5.3", "glm53", "glm-53"]
 	}),
+	preset("zhipu", "glm-5.3-flash", "GLM-5.3-Flash", {
+		// 官方：原生多模态，1M 上下文、128K 输出；thinking 常开，effort 默认 max
+		maxInputTokens: 1000000,
+		maxOutputTokens: 128000,
+		contextWindow: 1000000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: ZHIPU_GLM53_REASONING,
+		patterns: ["glm-5.3-flash", "glm53flash", "glm-53-flash"]
+	}),
+	preset("zhipu", "glm-5.3-flashx", "GLM-5.3-FlashX", {
+		// 官方：与 GLM-5.3-Flash 共用参数，推理速度更快
+		maxInputTokens: 1000000,
+		maxOutputTokens: 128000,
+		contextWindow: 1000000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: ZHIPU_GLM53_REASONING,
+		patterns: ["glm-5.3-flashx", "glm53flashx", "glm-53-flashx"]
+	}),
 	preset("zhipu", "glm-5.2", "GLM-5.2", {
 		// 官方：thinking 可开关（thinking:{"type":"enabled"}），reasoning_effort 支持 max
 		maxInputTokens: 1000000,

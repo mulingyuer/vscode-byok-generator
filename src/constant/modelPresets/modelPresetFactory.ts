@@ -10,6 +10,7 @@
 import type { ModelPreset, ModelVendor } from "@/types/wizard";
 import type {
 	AnthropicReasoningEffort,
+	DeepSeekReasoningEffort,
 	GoogleReasoningEffort,
 	MoonshotReasoningEffort,
 	OpenAIReasoningEffort,
@@ -58,8 +59,11 @@ export const GOOGLE_REASONING_WITH_MINIMAL: GoogleReasoningEffort[] = [
 ];
 export const GOOGLE_REASONING: GoogleReasoningEffort[] = ["low", "medium", "high"];
 
-/** 标准推理等级（Qwen/DeepSeek/xAI/MiniMax/MiMo/腾讯/美团等） */
+/** 标准推理等级（Qwen/xAI/MiniMax/MiMo/腾讯/美团等） */
 export const STANDARD_REASONING: StandardReasoningEffort[] = ["low", "medium", "high"];
+
+/** DeepSeek 推理等级 */
+export const DEEPSEEK_REASONING: DeepSeekReasoningEffort[] = ["low", "high", "max"];
 
 /** 智谱 GLM-5.3 档位（无 medium） */
 export const ZHIPU_GLM53_REASONING: ZhipuReasoningEffort[] = ["low", "high", "max"];

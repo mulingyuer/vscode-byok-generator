@@ -20,6 +20,9 @@ export type GoogleReasoningEffort = "minimal" | "low" | "medium" | "high";
 /** 标准推理等级（其余厂商通用） */
 export type StandardReasoningEffort = "low" | "medium" | "high";
 
+/** DeepSeek 推理等级 */
+export type DeepSeekReasoningEffort = "low" | "high" | "max";
+
 /** 智谱 GLM 推理等级（5.3 仅 low/high/max） */
 export type ZhipuReasoningEffort = "low" | "high" | "max";
 

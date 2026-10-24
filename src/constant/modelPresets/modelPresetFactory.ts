@@ -12,6 +12,7 @@ import type {
 	AnthropicReasoningEffort,
 	DeepSeekReasoningEffort,
 	GoogleReasoningEffort,
+	MiniMaxReasoningEffort,
 	MoonshotReasoningEffort,
 	OpenAIReasoningEffort,
 	StandardReasoningEffort,
@@ -70,6 +71,15 @@ export const ZHIPU_GLM53_REASONING: ZhipuReasoningEffort[] = ["low", "high", "ma
 
 /** 月之暗面 Kimi k3 档位（无 medium） */
 export const MOONSHOT_K3_REASONING: MoonshotReasoningEffort[] = ["low", "high", "max"];
+
+/** MiniMax M3.1 Flash 五档（默认 max） */
+export const MINIMAX_M31_FLASH_REASONING: MiniMaxReasoningEffort[] = [
+	"low",
+	"medium",
+	"high",
+	"xhigh",
+	"max"
+];
 
 /** 腾讯混元 HY4 档位（无 medium，none 为关闭思考） */
 export const TENCENT_HY4_REASONING: TencentReasoningEffort[] = ["low", "high"];

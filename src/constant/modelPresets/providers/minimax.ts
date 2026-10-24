@@ -8,10 +8,26 @@
  * 怎么可能会有bug！！！
  */
 import type { ModelPreset } from "@/types/wizard";
-import { STANDARD_REASONING, preset } from "../modelPresetFactory";
+import { MINIMAX_M31_FLASH_REASONING, STANDARD_REASONING, preset } from "../modelPresetFactory";
 
 // TODO: MiniMax 各模型 maxOutputTokens 官方未逐项公布（M2 系列已知 128K 含 CoT），当前为保守值，待官方文档补充后更新
 export const MINIMAX_PRESETS: ModelPreset[] = [
+	preset("minimax", "minimax-m3.1-flash", "MiniMax M3.1 Flash", {
+		// 官方：1M 上下文，最大输出 524288（thinking 块 tokens 计入输出上限）；effort 五档默认 max；temperature/top_p 固定 1/0.95；多模态输入（文本/图片/视频）
+		maxInputTokens: 1000000,
+		maxOutputTokens: 524288,
+		contextWindow: 1000000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: MINIMAX_M31_FLASH_REASONING,
+		patterns: [
+			"minimax-m3.1-flash",
+			"minimaxm31flash",
+			"minimax-m3-1-flash",
+			"minimax-m3.1-flash-preview"
+		]
+	}),
 	preset("minimax", "minimax-m3", "MiniMax M3", {
 		// 官方：1M 上下文，thinking 默认关，thinking:{"type":"adaptive"} 开启；多模态（图≤10MB/视频≤50MB）
 		maxInputTokens: 1000000,

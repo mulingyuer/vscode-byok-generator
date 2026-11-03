@@ -21,5 +21,15 @@ export const MEITUAN_PRESETS: ModelPreset[] = [
 		vision: false,
 		thinking: false,
 		patterns: ["longcat-2.0", "longcat20", "longcat-2", "longcat2", "longcat-2.0-preview"]
+	}),
+	preset("meituan", "longcat-2.5", "LongCat 2.5", {
+		// 官方：1M 上下文，128K 最大输出，OpenAI + Anthropic 双协议
+		maxInputTokens: 1000000,
+		maxOutputTokens: 128000,
+		contextWindow: 1000000,
+		toolCalling: true,
+		vision: false,
+		thinking: false,
+		patterns: ["longcat-2.5", "longcat25", "longcat-2.5-preview"]
 	})
 ];

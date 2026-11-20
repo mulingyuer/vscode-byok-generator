@@ -93,6 +93,18 @@ export const OPENAI_PRESETS: ModelPreset[] = [
 		supportsReasoningEffort: OPENAI_REASONING,
 		patterns: ["gpt-5.4", "gpt54"]
 	}),
+	preset("openai", "gpt-5.4-pro", "GPT-5.4 Pro", {
+		// 官方：仅 Responses API，1,050,000 上下文，档位 medium/high/xhigh
+		maxInputTokens: 922000,
+		maxOutputTokens: 128000,
+		contextWindow: 1050000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: OPENAI_REASONING_PRO_52,
+		apiType: "responses",
+		patterns: ["gpt-5.4-pro", "gpt54pro", "gpt-5.4pro"]
+	}),
 	preset("openai", "gpt-5.4-mini", "GPT-5.4 mini", {
 		// 官方：400K 上下文，其中最大输入 272K
 		maxInputTokens: 272000,
@@ -103,6 +115,17 @@ export const OPENAI_PRESETS: ModelPreset[] = [
 		thinking: true,
 		supportsReasoningEffort: OPENAI_REASONING,
 		patterns: ["gpt-5.4-mini", "gpt54mini"]
+	}),
+	preset("openai", "gpt-5.4-nano", "GPT-5.4 nano", {
+		// 官方：400K 上下文，其中最大输入 272K
+		maxInputTokens: 272000,
+		maxOutputTokens: 128000,
+		contextWindow: 400000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: OPENAI_REASONING,
+		patterns: ["gpt-5.4-nano", "gpt54nano", "gpt-5.4nano"]
 	}),
 	preset("openai", "gpt-5.3-codex", "GPT-5.3 Codex", {
 		// 官方：仅 Responses API，无 chat-completions；档位无 none

@@ -9,7 +9,14 @@
  */
 
 /** OpenAI 推理等级（5.x 系列，官方 reasoning_effort 枚举） */
-export type OpenAIReasoningEffort = "none" | "low" | "medium" | "high" | "xhigh" | "max";
+export type OpenAIReasoningEffort =
+	| "none"
+	| "minimal"
+	| "low"
+	| "medium"
+	| "high"
+	| "xhigh"
+	| "max";
 
 /** Anthropic 推理等级（按模型分 5 级或 4 级） */
 export type AnthropicReasoningEffort = "low" | "medium" | "high" | "xhigh" | "max";

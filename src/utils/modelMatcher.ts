@@ -43,6 +43,10 @@ function isVersionSuffix(suffix: string): boolean {
 /** 代表真实模型系列的后缀保留词，命中则不视为网关变体 */
 const RESERVED_MODEL_SUFFIXES = new Set([
 	"mini",
+	"nano",
+	"sol",
+	"terra",
+	"astra",
 	"plus",
 	"flash",
 	"pro",

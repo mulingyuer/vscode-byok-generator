@@ -20,8 +20,12 @@ import type {
 	ZhipuReasoningEffort
 } from "./modelPresetTypes";
 
-/** OpenAI 推理等级常量（5.6 系列含 max，5.x 其余不含 max） */
+/** OpenAI 推理等级常量 */
+export const OPENAI_REASONING_GPT5: OpenAIReasoningEffort[] = ["minimal", "low", "medium", "high"];
+export const OPENAI_REASONING_GPT51: OpenAIReasoningEffort[] = ["none", "low", "medium", "high"];
 export const OPENAI_REASONING: OpenAIReasoningEffort[] = ["none", "low", "medium", "high", "xhigh"];
+export const OPENAI_REASONING_PRO_52: OpenAIReasoningEffort[] = ["medium", "high", "xhigh"];
+export const OPENAI_REASONING_HIGH_ONLY: OpenAIReasoningEffort[] = ["high"];
 export const OPENAI_REASONING_WITH_MAX: OpenAIReasoningEffort[] = [
 	"none",
 	"low",
@@ -38,6 +42,15 @@ export const OPENAI_REASONING_NO_NONE: OpenAIReasoningEffort[] = [
 	"xhigh",
 	"max"
 ];
+export const OPENAI_REASONING_WITH_NONE_MAX: OpenAIReasoningEffort[] = [
+	"none",
+	"low",
+	"medium",
+	"high",
+	"xhigh",
+	"max"
+];
+
 /** gpt-5.3-codex 专用（无 none，仅 Responses API） */
 export const OPENAI_CODEX_REASONING: OpenAIReasoningEffort[] = ["low", "medium", "high", "xhigh"];
 

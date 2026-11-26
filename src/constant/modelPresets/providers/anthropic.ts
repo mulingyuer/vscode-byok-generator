@@ -11,6 +11,61 @@ import type { ModelPreset } from "@/types/wizard";
 import { ANTHROPIC_REASONING_4, ANTHROPIC_REASONING_5, preset } from "../modelPresetFactory";
 
 export const ANTHROPIC_PRESETS: ModelPreset[] = [
+	// 官方：1M 上下文，128K 输出；adaptive thinking 常开不可关，effort 五档（low/medium/high/xhigh/max），默认 high
+	preset("anthropic", "claude-fable-5-2", "Claude Fable 5.2", {
+		maxInputTokens: 1000000,
+		maxOutputTokens: 128000,
+		contextWindow: 1000000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: ANTHROPIC_REASONING_5,
+		patterns: ["claude-fable-5-2", "claudefable52", "claude-fable52"]
+	}),
+	// 官方（legacy）：1M 上下文，128K 输出；adaptive thinking 常开不可关，官方 effort 文档明确「supports all five effort levels」，默认 high
+	preset("anthropic", "claude-fable-5-1", "Claude Fable 5.1", {
+		maxInputTokens: 1000000,
+		maxOutputTokens: 128000,
+		contextWindow: 1000000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: ANTHROPIC_REASONING_5,
+		patterns: ["claude-fable-5-1", "claudefable51", "claude-fable51"]
+	}),
+	// 官方：1M 上下文，128K 输出；adaptive thinking 默认开启，effort 五档，默认 medium
+	preset("anthropic", "claude-opus-5-5", "Claude Opus 5.5", {
+		maxInputTokens: 1000000,
+		maxOutputTokens: 128000,
+		contextWindow: 1000000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: ANTHROPIC_REASONING_5,
+		patterns: ["claude-opus-5-5", "claudeopus55", "claude-opus55"]
+	}),
+	// 官方：1M 上下文，128K 输出；adaptive thinking 默认开启，effort 五档，默认 high
+	preset("anthropic", "claude-sonnet-5-5", "Claude Sonnet 5.5", {
+		maxInputTokens: 1000000,
+		maxOutputTokens: 128000,
+		contextWindow: 1000000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: ANTHROPIC_REASONING_5,
+		patterns: ["claude-sonnet-5-5", "claudesonnet55", "claude-sonnet55"]
+	}),
+	// 官方：1M 上下文，128K 输出；adaptive thinking 可由用户在高及以下的档位关闭，effort 五档，默认 medium
+	preset("anthropic", "claude-haiku-5-5", "Claude Haiku 5.5", {
+		maxInputTokens: 1000000,
+		maxOutputTokens: 128000,
+		contextWindow: 1000000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: ANTHROPIC_REASONING_5,
+		patterns: ["claude-haiku-5-5", "claudehaiku55", "claude-haiku55"]
+	}),
 	preset("anthropic", "claude-sonnet-5", "Claude Sonnet 5", {
 		maxInputTokens: 1000000,
 		maxOutputTokens: 128000,

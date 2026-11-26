@@ -13,6 +13,17 @@ import { TENCENT_HY4_REASONING, preset } from "../modelPresetFactory";
 // TODO: 腾讯混元平台正迁移至 TokenHub，hy3 官方上下文/输出上限未完整公布，
 // 当前 maxInputTokens 参考 hunyuan-standard-256K 升级代取保守值，待 TokenHub 文档完善后更新
 export const TENCENT_PRESETS: ModelPreset[] = [
+	// 官方（TokenHub）：1024K 上下文，其中最大输入 960K、最大输出 64K；原生多模态（文本+图片），支持工具调用，thinking 默认开启（默认 high）
+	preset("tencent", "hy4-flash", "Hunyuan 4 Flash", {
+		maxInputTokens: 960000,
+		maxOutputTokens: 64000,
+		contextWindow: 1024000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: TENCENT_HY4_REASONING,
+		patterns: ["hy4-flash", "hy4flash"]
+	}),
 	preset("tencent", "hy3", "Hunyuan 3.0", {
 		// HY3-Preview 为同一模型的另一种官方写法，归入本条目 patterns
 		maxInputTokens: 256000,

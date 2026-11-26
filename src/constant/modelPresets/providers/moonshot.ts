@@ -12,6 +12,17 @@ import { MOONSHOT_K3_REASONING, STANDARD_REASONING, preset } from "../modelPrese
 
 // TODO: kimi-k2.x 各模型 maxOutputTokens 官方未逐项公布，当前为保守值 8192，待官方文档补充后更新
 export const MOONSHOT_PRESETS: ModelPreset[] = [
+	// 官方：1,048,576 上下文，最大输入/输出均 1M；thinking 可调且可关闭，effort low/high/max（默认 max）；文本/图片/视频输入，工具调用
+	preset("moonshot", "kimi-k2.8", "Kimi K2.8", {
+		maxInputTokens: 1048576,
+		maxOutputTokens: 1048576,
+		contextWindow: 1048576,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: MOONSHOT_K3_REASONING,
+		patterns: ["kimi-k2.8", "kimik28", "kimi-k2-8"]
+	}),
 	preset("moonshot", "kimi-k3.1-pro", "Kimi K3.1 Pro", {
 		// 官方：1M 上下文（需高阶套餐），thinking 常开不可关，effort low/high/max（默认 max）；temperature/top_p 固定 1.0/0.95
 		// TODO: maxOutputTokens 官方未公布，沿用保守值 131072，待官方文档补充后更新

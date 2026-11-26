@@ -24,6 +24,9 @@ export type AnthropicReasoningEffort = "low" | "medium" | "high" | "xhigh" | "ma
 /** Google 推理等级（thinking_level 参数） */
 export type GoogleReasoningEffort = "minimal" | "low" | "medium" | "high";
 
+/** Gemini 4 系列新增 xhigh 档后的推理等级（官方 thinking_level 枚举） */
+export type GoogleReasoningEffortWithXHigh = GoogleReasoningEffort | "xhigh";
+
 /** 标准推理等级（其余厂商通用） */
 export type StandardReasoningEffort = "low" | "medium" | "high";
 

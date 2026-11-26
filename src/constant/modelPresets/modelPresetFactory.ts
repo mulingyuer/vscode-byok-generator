@@ -15,6 +15,7 @@ import type {
 	MiniMaxReasoningEffort,
 	MoonshotReasoningEffort,
 	OpenAIReasoningEffort,
+	GoogleReasoningEffortWithXHigh,
 	StandardReasoningEffort,
 	TencentReasoningEffort,
 	ZhipuReasoningEffort
@@ -72,6 +73,13 @@ export const GOOGLE_REASONING_WITH_MINIMAL: GoogleReasoningEffort[] = [
 	"high"
 ];
 export const GOOGLE_REASONING: GoogleReasoningEffort[] = ["low", "medium", "high"];
+/** Gemini 4 Neon / Hydrogen（官方新增 xhigh，无 minimal） */
+export const GOOGLE_REASONING_WITH_XHIGH: GoogleReasoningEffortWithXHigh[] = [
+	"low",
+	"medium",
+	"high",
+	"xhigh"
+];
 
 /** 标准推理等级（Qwen/xAI/MiniMax/MiMo/腾讯/美团等） */
 export const STANDARD_REASONING: StandardReasoningEffort[] = ["low", "medium", "high"];

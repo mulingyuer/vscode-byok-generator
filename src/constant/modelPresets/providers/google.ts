@@ -8,17 +8,79 @@
  * 怎么可能会有bug！！！
  */
 import type { ModelPreset } from "@/types/wizard";
-import { GOOGLE_REASONING, GOOGLE_REASONING_WITH_MINIMAL, preset } from "../modelPresetFactory";
+import {
+	GOOGLE_REASONING,
+	GOOGLE_REASONING_WITH_MINIMAL,
+	GOOGLE_REASONING_WITH_XHIGH,
+	preset
+} from "../modelPresetFactory";
 
 export const GOOGLE_PRESETS: ModelPreset[] = [
-	preset("google", "gemini-3.7-flash", "Gemini 3.7 Flash", {
-		// TODO: 官方文档暂未查到 gemini-3.7-flash，参数沿用 3.x Flash 保守值，待官方资料补充后复核
+	// 官方：1M 统一上下文（输入/思考/输出共享），单次输出上限 65,536；thinking_level 仅 low/medium/high，默认 medium；原生多模态 + 内置工具
+	preset("google", "gemini-4-neon", "Gemini 4 Neon", {
 		maxInputTokens: 1048576,
 		maxOutputTokens: 65536,
 		contextWindow: 1048576,
 		toolCalling: true,
 		vision: true,
-		thinking: false,
+		thinking: true,
+		supportsReasoningEffort: GOOGLE_REASONING_WITH_XHIGH,
+		patterns: ["gemini-4-neon", "gemini4neon"]
+	}),
+	// 官方：1M 统一上下文，thinking_level 仅 low/medium/high（默认 high），另支持 xhigh
+	preset("google", "gemini-4-hydrogen", "Gemini 4 Hydrogen", {
+		maxInputTokens: 1048576,
+		maxOutputTokens: 65536,
+		contextWindow: 1048576,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: GOOGLE_REASONING_WITH_XHIGH,
+		patterns: ["gemini-4-hydrogen", "gemini4hydrogen"]
+	}),
+	// 官方：1M 统一上下文，thinking_level 仅 low/medium/high，默认 medium，无 xhigh
+	preset("google", "gemini-4-carbon", "Gemini 4 Carbon", {
+		maxInputTokens: 1048576,
+		maxOutputTokens: 65536,
+		contextWindow: 1048576,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: GOOGLE_REASONING,
+		patterns: ["gemini-4-carbon", "gemini4carbon"]
+	}),
+	// 官方：1M 统一上下文，thinking_level 仅 low/medium/high，默认 medium，无 xhigh
+	preset("google", "gemini-4-argon", "Gemini 4 Argon", {
+		maxInputTokens: 1048576,
+		maxOutputTokens: 65536,
+		contextWindow: 1048576,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: GOOGLE_REASONING,
+		patterns: ["gemini-4-argon", "gemini4argon"]
+	}),
+	// 官方：1M 上下文窗口，最大输出 65,536；官方明确 minimal 不可用，thinking_level 仅 low/medium/high，默认 medium
+	preset("google", "gemini-3.8-flash", "Gemini 3.8 Flash", {
+		maxInputTokens: 1048576,
+		maxOutputTokens: 65536,
+		contextWindow: 1048576,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: GOOGLE_REASONING,
+		patterns: ["gemini-3.8-flash", "gemini38flash", "gemini-3.8flash"]
+	}),
+	// 官方（已废弃，请求自动路由到 gemini-3.8-flash）：1M 上下文，最大输出 65,536；
+	// thinking_level 仅 low/medium/high（明确禁 minimal），默认 medium
+	preset("google", "gemini-3.7-flash", "Gemini 3.7 Flash", {
+		maxInputTokens: 1048576,
+		maxOutputTokens: 65536,
+		contextWindow: 1048576,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: GOOGLE_REASONING,
 		patterns: ["gemini-3.7-flash", "gemini37flash", "gemini-3.7flash"]
 	}),
 	preset("google", "gemini-3.6-flash", "Gemini 3.6 Flash", {

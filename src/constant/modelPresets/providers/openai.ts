@@ -22,6 +22,17 @@ import {
 } from "../modelPresetFactory";
 
 export const OPENAI_PRESETS: ModelPreset[] = [
+	// 官方：gpt-5.6 是 gpt-5.6-sol 的别名路由；1,050,000 上下文（最大输入 922,000），128K 输出，effort 含 none/max，未限定仅 Responses API
+	preset("openai", "gpt-5.6", "GPT-5.6", {
+		maxInputTokens: 922000,
+		maxOutputTokens: 128000,
+		contextWindow: 1050000,
+		toolCalling: true,
+		vision: true,
+		thinking: true,
+		supportsReasoningEffort: OPENAI_REASONING_WITH_NONE_MAX,
+		patterns: ["gpt-5.6", "gpt56"]
+	}),
 	preset("openai", "gpt-6-sol", "GPT-6 Sol", {
 		// 官方：1,050,000 上下文，最大输入 922,000，档位含 none/max
 		maxInputTokens: 922000,
